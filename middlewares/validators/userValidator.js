@@ -18,6 +18,11 @@ const schema = [
         .escape()
         .isEmail()
         .normalizeEmail(),
+    body("password")
+        .isLength({ min: 6 })
+        .withMessage("Votre mot de passe doit contenir au moins 6 caractère")
+        .isLength({ max: 20 })
+        .withMessage("Votre mot de passe contient trop de caractères.(Max. 20 autorisé)")
 ]
 
 function validate(req, res, next) {

@@ -7,6 +7,10 @@ const userValidator = require('../middlewares/validators/userValidator');
 const multer = require('../middlewares/multerConfig');
 const auth = require('../middlewares/auth');
 
+
+// Login
+router.post("/login", userController.login);
+
 // New user
 router.post("/users",
         multer,
@@ -16,29 +20,30 @@ router.post("/users",
         userController.signup
 );
 
-// Login
-router.post("/login", userController.login);
-
-
 // Update user by id
 router.put("/users/:uuid",
         auth,
         multer,
+        userValidator.schema,
+        userValidator.validate,
         userController.updateById
 );
 
 // Get user by id
-router.get("/users/:uuid", userController.getById);
+router.get("/users/:uuid",
+        auth,
+        userController.getById
+);
 
 // ONLY FOR TEST , TO DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // Get all users 
 router.get("/users", auth, userController.getAllUsers);
 
-// Get user by id
-router.delete("/users/:uuid", userController.deleteById);
-
-
-
+// Delete user by id
+router.delete("/users/:uuid",
+        auth,
+        userController.deleteById
+);
 
 
 module.exports = router;
