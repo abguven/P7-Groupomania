@@ -3,8 +3,8 @@ const { body, validationResult } = require('express-validator');
 const schema = [
     body("user_name")
         .trim()
-        .isLength({ min: 5 })
-        .withMessage("Votre nom doit contenir au moins 5 caractère")
+        .isLength({ min: 3 })
+        .withMessage("Votre nom doit contenir au moins 3 caractère")
         .isLength({ max: 40 })
         .withMessage("Votre nom contient trop de caractères.(Max. 40 autorisé)")
         .escape(),

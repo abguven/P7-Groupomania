@@ -6,13 +6,21 @@ const errHandler = (error, res, status=400) => {
         return res.status(status).json({ error: "Cet email existe déjà!" })
     }
 
+    // Sequelize validation error
+    if (error.name == "SequelizeValidationError" && error.errors[0].type == "notNull Violation"){
+        return res.status(status).json({
+            error : "Un champs obligatoire est nul",
+            path: `${error.errors[0].path}`
+         });
+    }
+
     // If in production return only essential information 
     if (process.env.NODE_ENV === "production") {
         return res.status(status).json({ error: error.message });
     } else {
         return res.status(status).json({
+            error: error.message,
             errorName : error.name, 
-            errorMessage: error.message,
             errorStack: error.stack })
     }
 }

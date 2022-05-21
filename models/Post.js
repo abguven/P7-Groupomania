@@ -11,7 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ User }) {
       // define association here
-      this.belongsTo(User, { foreignKey: "user_uuid" })
+      
+      // User <=> Post 'one to many' relationship
+      this.belongsTo(User, {
+        foreignKey: {
+          name: "user_uuid",
+          type: DataTypes.UUID,
+          allowNull: false
+        }
+      });
     }
   }
   Post.init({
@@ -25,11 +33,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    body: {
+    content: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    likes: DataTypes.INTEGER,
+    post_image_url: {
+      type: DataTypes.STRING,
+    },
+    likes: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     user_uuid: {
       type: DataTypes.UUID,
       allowNull: false,

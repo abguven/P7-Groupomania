@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const userValidator = require('../middlewares/validators/userValidator');
-const multer = require('../middlewares/multerConfig');
+const multer = require('../middlewares/multerConfigAvatar');
 const auth = require('../middlewares/auth');
 
 

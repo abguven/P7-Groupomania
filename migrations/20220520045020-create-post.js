@@ -12,12 +12,17 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      body: {
+      content: {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      post_image_url:{
+        type: Sequelize.STRING,
+      },
       likes: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       user_uuid: {
         type: Sequelize.UUID,

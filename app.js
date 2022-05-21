@@ -2,6 +2,8 @@ const express = require('express');
 //const cors = require('cors');
 const morgan = require('morgan');
 const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/postRoutes");
+
 const helmet = require('helmet');
 const path = require('path');
 
@@ -30,6 +32,9 @@ app.use("/images/avatars", express.static(path.join(__dirname, "images/avatars")
 
 // User routes
 app.use("/api/v1",userRoutes);
+
+// Post routes
+app.use("/api/v1/posts", postRoutes);
 
 
 

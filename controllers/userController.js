@@ -50,12 +50,12 @@ exports.updateById = async (req, res) => {
         const user = await User.findByPk(req.params.uuid);
         // User not found
         if (user === null) {
-            throw new Error("Utilisateur n'existe pas ou l'id est erroné");
+            return res.status(404).json({ error: lang.ERR_USER_NOT_FOUND });
         }
 
         // Authorisation check
         if (req.auth.userId != user.uuid) {
-            return res.status(403).json({ error: "Vous nêtes pas autrorisé à effectuer cette opération " })
+            return res.status(403).json({ error: lang.ERR_NOT_AUTHORISED_FOR })
         }
 
         user.email = email;
@@ -94,7 +94,7 @@ exports.getById = (req, res) => {
     User.findByPk(req.params.uuid)
         .then(user => {
             if (user === null) {
-                return res.status(400).json({ error: "Cet utilisateur n'existe pas!" });
+                return res.status(404).json({ error: lang.ERR_USER_NOT_FOUND });
             }
             res.status(200).json(user);
         })
@@ -108,19 +108,18 @@ exports.deleteById = (req, res) => {
     User.findByPk(req.params.uuid)
         .then(user => {
             if (user === null) {
-                return res.status(400).json({ error: "Cet utilisateur n'existe pas!" });
+                return res.status(404).json({ error: lang.ERR_USER_NOT_FOUND });
             }
             // Authorisation check
             if (req.auth.userId != user.uuid && !req.auth.isAdmin) {
                 console.log("req.auth : ", req.auth);
-                return res.status(403).json({ error: "Vous nêtes pas autrorisé à effectuer cette opération " })
+                return res.status(403).json({ error: lang.ERR_NOT_AUTHORISED_FOR })
             }
+            // Delete the user
             user.destroy();
-            res.status(200).json({ message: "Utilisateur a bien été supprimé" });
+            res.status(200).json({ message: lang.MSG_USER_DELETED });
         })
-        .catch(error => {
-            errHandler(error, res);
-        })
+        .catch(error => errHandler(error, res))
 }
 
 
@@ -131,11 +130,11 @@ exports.login = (req, res) => {
     })
         .then(user => {
             if (user === null) {
-                return res.status(400).json({ error: "Email n'existe pas." })
+                return res.status(404).json({ error: lang.ERR_EMAIL_NOT_FOUND })
             }
             // Verify password
             if (!bcrypt.compareSync(req.body.password, user.password)) {
-                return res.status(401).json(({ error: "Mot de passe incorrect" }))
+                return res.status(401).json(({ error: lang.ERR_INCORRECT_PASSWORD }))
             }
             // Authentication succeed
             const token = jwt.sign({

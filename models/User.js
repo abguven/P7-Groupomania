@@ -9,11 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate({ Post }) {
-      // define association here
-      this.hasMany(Post, { foreignKey: "user_uuid" })
+      // User <=> Post 'one to many' relationship
+      this.hasMany(Post, {
+        foreignKey: {
+          name: "user_uuid",
+          type: DataTypes.UUID,
+          allowNull: false
+        }
+      })
     }
 
-    toJSON(){
+    toJSON() {
       // filter returning password of the user in any case
       return { ...this.get(), password: "hidden" } // TODO: password: null
     }
