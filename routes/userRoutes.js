@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const userValidator =require('../middlewares/validators/userValidator');
+const userValidator = require('../middlewares/validators/userValidator');
 const multer = require('../middlewares/multerConfig');
 const auth = require('../middlewares/auth');
 
@@ -14,17 +14,18 @@ router.post("/users",
         userValidator.schema,
         userValidator.validate,
         userController.signup
-        );
+);
 
 // Login
-router.post("/login",userController.login);
+router.post("/login", userController.login);
 
 
 // Update user by id
 router.put("/users/:uuid",
-            multer,
-            userController.updateById
-        );
+        auth,
+        multer,
+        userController.updateById
+);
 
 // Get user by id
 router.get("/users/:uuid", userController.getById);

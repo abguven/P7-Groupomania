@@ -47,9 +47,16 @@ exports.updateById = async (req, res) => {
         = req.body;
 
     try {
-        const user = await User.findOne({ // TODO: Use findByPk instead
-            where: { uuid: req.params.uuid }
-        });
+        const user = await User.findByPk(req.params.uuid);
+        // User not found
+        if (user===null){
+            throw new Error("Utilisateur n'existe pas ou l'id est erroné")
+        }
+
+        // Authorisation check
+       
+
+
         user.email = email;
         user.password = password;
         user.user_name = user_name;
@@ -83,9 +90,7 @@ exports.getAllUsers = (req, res) => {
 
 // Get user by id
 exports.getById = (req, res) => {
-    User.findOne({ // TODO: Use findByPk instead
-        where: { uuid: req.params.uuid }
-    })
+    User.findByPk(req.params.uuid)
         .then(users => {
             res.status(200).json(users);
         })
@@ -96,9 +101,7 @@ exports.getById = (req, res) => {
 
 // Delete user by id
 exports.deleteById = (req, res) => {
-    User.findOne({ // TODO: Use findByPk instead
-        where: { uuid: req.params.uuid }
-    })
+    User.findByPk(req.params.uuid)
         .then(user => {
             user.destroy();
             res.status(200).json({ message: "Utilisateur a bien été supprimé" });
