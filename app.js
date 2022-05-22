@@ -1,5 +1,5 @@
 const express = require('express');
-//const cors = require('cors');
+const cors = require('cors');
 const morgan = require('morgan');
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/postRoutes");
@@ -25,7 +25,7 @@ app.use("/images/avatars", express.static(path.join(__dirname, "images/avatars")
 //app.use(helmet());
 
 // Enable CORS
-// app.use(cors());
+ app.use(cors());
 
 
 // ROUTES
