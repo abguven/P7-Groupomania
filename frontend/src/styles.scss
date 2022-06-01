@@ -1,4 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Fonts 
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+
+
+$font-family-base: 'Lato', sans-serif;
+
+// Colors
+$primary: #FD2D01; 
+$secondary : #FFD7D7;
+
+// Default link color
+//$link-color 
+
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+
+// Custom styles
+form label{
+    margin-bottom: 0;
+}
+
+form input{
+    margin: 0.5rem auto;
+}
+
+form .signupForm__profilePhoto{
+    display:block;
+    max-height: 130px;
+    //margin-top: 10px;
+}
+
+form input[type="file"] {
+    display: none;
+}
