@@ -11,7 +11,8 @@ module.exports = Object.freeze({
 
 
 
-  // Users
+  // Users*
+  ERR_EMAIL_UNIQUE : "Cet email existe déjà dans la base de donnés",
   ERR_EMAIL_NOT_FOUND: "Email n'existe pas dans la base de données",
   ERR_INCORRECT_PASSWORD: "Mot de passe erroné",
   ERR_USER_NOT_FOUND: "Utilisateur n'existe pas",

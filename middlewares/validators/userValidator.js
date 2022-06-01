@@ -18,17 +18,26 @@ const schema = [
         .escape()
         .isEmail()
         .normalizeEmail(),
-    body("password")
-        .isLength({ min: 6 })
-        .withMessage("Votre mot de passe doit contenir au moins 6 caractère")
-        .isLength({ max: 20 })
-        .withMessage("Votre mot de passe contient trop de caractères.(Max. 20 autorisé)")
+
 ]
 
-function validate(req, res, next) {
+async function validate(req, res, next) {
+    // If user wants to update without changing his password 
+    console.log(`body.ignorePassword = ${req.body.ignorePassword} || req.method = ${req.method}`);
+    if (req.body.ignorePassword !== "true".toUpperCase() || req.method !== "PUT") {
+        await body("password")
+            .isLength({ min: 6 })
+            .withMessage("Votre mot de passe doit contenir au moins 6 caractères")
+            .isLength({ max: 20 })
+            .withMessage("Votre mot de passe contient trop de caractères.(Max. 20 autorisé)")
+            .run(req);
+    } else {
+        console.log('\x1b[33m Ignoring password validation ... \x1b[0m');
+    }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json(errors.array())
+        return res.status(400).json({ error: errors.array()[0].msg }); // Send only first validation error
     }
     next();
 }

@@ -3,7 +3,7 @@ const errHandler = (error, res, status=400) => {
     
     // Email must be unique
     if (error.name == "SequelizeUniqueConstraintError" && error.errors[0].path == "email") {
-        return res.status(status).json({ error: "Cet email existe déjà!" })
+        return res.status(status).json({ error: lang.ERR_EMAIL_UNIQUE })
     }
 
     // Sequelize validation error

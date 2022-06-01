@@ -11,7 +11,7 @@ exports.newPost = (req, res) => {
     // Prepare url for uploaded image
     let post_image_url = "";
     if (req.file) {
-        post_image_url = `${req.protocol}://${req.get('host')}/posts/${req.file.filename}`
+        post_image_url = `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`
     }
 
     // Retrieve user id
@@ -97,7 +97,7 @@ exports.updateById = async (req, res) => {
         const { title, content } = req.body;
 
         if (req.file) {
-            post.post_image_url = `${req.protocol}://${req.get('host')}/posts/${req.file.filename}`;
+            post.post_image_url = `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`;
         } else {
             post.post_image_url = "";
         }

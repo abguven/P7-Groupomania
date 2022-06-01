@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(morgan('combined'));
 
 // Static path for /images/
-app.use("/images/avatars", express.static(path.join(__dirname, "images/avatars")));
+app.use("/images/avatars/", express.static(path.join(__dirname, "images/avatars")));
 
 
 //app.use(helmet());

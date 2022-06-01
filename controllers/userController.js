@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { sequelize, User } = require('../models');
 const errHandler = require('./errorHandler');
+const fs = require('fs');
 
 /**
  * Create new user
@@ -18,7 +19,7 @@ exports.signup = async (req, res) => {
         // Prepare url for uploaded image
         let avatar_url = "";
         if (req.file) {
-            avatar_url = `${req.protocol}://${req.get('host')}/avatars/${req.file.filename}`
+            avatar_url = `${req.protocol}://${req.get('host')}/images/avatars/${req.file.filename}`
         }
         // Creating user in database
         const user = await User.create({
@@ -43,7 +44,7 @@ exports.signup = async (req, res) => {
 exports.updateById = async (req, res) => {
 
     // Get data from request body
-    const { email, password, user_name, last_name }
+    const { email, password, user_name, last_name, resetAvatar }
         = req.body;
 
     try {
@@ -59,15 +60,37 @@ exports.updateById = async (req, res) => {
         }
 
         user.email = email;
-        user.password = password;
+        if (password){
+            console.log(`Setting password to : ${password}`);
+            user.password = password;
+        }
         user.user_name = user_name;
         user.last_name = last_name;
 
+
+        // Update "user.avatar_url" with new file and delete the old file
         if (req.file) {
-            user.avatar_url = `${req.protocol}://${req.get('host')}/avatars/${req.file.filename}`;
-        } else {
-            user.avatar_url = "";
-        }
+            // Try deleting old file
+            const oldFileName = user.avatar_url.split("/images/avatars")[1];
+            const oldFilePath = "images/avatars/" + oldFileName;
+            
+            // Check if the file exists
+            fs.stat(oldFilePath, function (err, stat) {
+                if (err == null) {
+                    fs.unlinkSync(oldFilePath); // Delete file if exists
+                    console.log(`${oldFilePath} deleted`)
+                } else {
+                    console.log(`Can't delete ${oldFilePath} `)
+                }
+            });
+
+            // Set new file's url
+            user.avatar_url = `${req.protocol}://${req.get('host')}/images/avatars/${req.file.filename}`;
+        }else{
+            if (resetAvatar){
+                user.avatar_url = "";
+            }
+        } 
         await user.save();
         return res.status(200).json({ user });
 
