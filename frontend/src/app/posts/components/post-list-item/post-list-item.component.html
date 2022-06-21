@@ -1,0 +1,31 @@
+<div class="card mt-4">
+    <div class="card-header">
+        <img class="img-round" [src]="post.user.avatar_url">
+        <span class="card-title ms-2">{{ post.user.user_name + " " + post.user.last_name }}</span>
+        <p class="card-text time-tag"><small class="text-muted">{{ post.createdAt | timeAgo }}</small></p>
+    </div>
+    <div class="card-body">
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-text lh-sm">{{ post.content }}</p>
+    </div>
+    <img class="card-img-bottom" 
+        *ngIf="post.post_image_url" [src]="post.post_image_url" [alt]="post.title">
+
+    <div class="card-footer">
+        <div class="footer-content">
+            <div>
+                <button class="btn btn-secondary me-2" 
+                    (click)="onModifyPost(post.uuid)" *ngIf="canUpdate(post.user_uuid)">Modifier</button>
+                <button class="btn btn-primary" 
+                (click)="onDeletePost()" *ngIf="canUpdate(post.user_uuid)">Supprimer</button>
+            </div>
+            <div class="like-buttons">
+                <i class="bi bi-hand-thumbs-up-fill like-icon" 
+                    (click)="onLikeAction()" [ngClass]="{ 'liked': liked }"></i>
+                <span *ngIf="post.likes">{{ post.likes }}</span>
+            </div>
+
+        </div>
+    </div>
+
+</div>

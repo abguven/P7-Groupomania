@@ -7,8 +7,9 @@
                 <div class="row">
                     <div class="form-group col-4 col-md-12">
                         <h2 class="mt-3">Mon compte</h2>
-                        <input (change)="onFileAdded($event)" #imageInput type="file" class="form-control"
-                            accept="image/*" id="avatar" name="avatar">
+                        <input type="file" class="form-control" accept="image/*" id="avatar" name="avatar"
+                            (change)="onFileAdded($event)"
+                            #imageInput>
                         <img [src]="avatarPreview" alt="Photo de profil" 
                             class="signupForm__profilePhoto mb-2" 
                             (click)="imageInput.click()">
@@ -49,9 +50,15 @@
                     <label for="last_name">Nom de famille</label>
                     <input type="text" class="form-control" id="last_name" formControlName="last_name">
                 </div>
-                <button class="btn btn-primary mt-2" [disabled]="userForm.invalid" (click)="onUpdate()">
-                    Sauvegarder
-                </button>
+                <div class="row">
+                    <button class="btn btn-primary m-2 col" [disabled]="userForm.invalid" (click)="onUpdate()">
+                        Sauvegarder
+                    </button>
+                    <button class="btn btn-secondary m-2 col" (click)="onCancel()">
+                        Annuler
+                    </button>    
+                </div>
+
                 <p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>
             </div>
         </div>

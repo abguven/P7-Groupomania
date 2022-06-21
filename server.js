@@ -2,7 +2,6 @@
 
 require("dotenv").config();
 
-
 // Langue pack for API messages
 global.lang = require(__dirname + process.env.LANG_FILE);
 

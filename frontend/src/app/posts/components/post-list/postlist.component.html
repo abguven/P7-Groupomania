@@ -1,0 +1,25 @@
+<div class="mt-4">
+    <app-new-post (refresh)="onRefresh()"></app-new-post>
+</div>
+
+<ng-container *ngIf="posts$ | async as posts">
+    <p class="text-black-50 text-center my-5" *ngIf="!loading && posts.length <=0">
+        Aucune publication disponible!!
+    </p>
+
+    <h1 class="h2" *ngIf="!loading && posts.length > 0">Publications</h1>
+
+    <app-post-list-item 
+        *ngFor="let post of posts"
+        [post]="post"
+        [loggedUserId]="loggedUserId"
+        [isAdmin]="isAdmin"
+        (likeAction)="onLikeAction($event)"
+        (deleteAction)="onDeleteAction($event)"
+    ></app-post-list-item>
+    <p *ngIf="!loading" class="text-warning">{{ errorMessage }}</p>  
+
+</ng-container>
+
+
+

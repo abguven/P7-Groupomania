@@ -35,4 +35,4 @@ const fileFilter = (req, file, cb) => {
 }
 
 
-module.exports = multer({ storage, fileFilter: fileFilter }).single("post");
+module.exports = multer({ storage, fileFilter: fileFilter }).single("postImage");

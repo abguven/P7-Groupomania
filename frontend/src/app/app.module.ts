@@ -6,15 +6,14 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './auth/login/login.component';
-import { PostsComponent } from './posts/posts.component';
-import { PostComponent } from './post/post.component';
 import { BsSpinnerComponent } from './tools/bs-spinner/bs-spinner.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { CookieService } from "ngx-cookie-service";
 import { SignupComponent } from './auth/signup/signup.component';
 import { UserUpdateComponent } from './users/user-update/user-update.component';
+import { PostsModule } from './posts/posts.module';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -23,9 +22,6 @@ import { UserUpdateComponent } from './users/user-update/user-update.component';
     AppComponent,
     HeaderComponent,
     LoginComponent,
-    PostsComponent,
-    PostComponent,
-    BsSpinnerComponent,
     SignupComponent,
     UserUpdateComponent,
   ],
@@ -33,8 +29,9 @@ import { UserUpdateComponent } from './users/user-update/user-update.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    ReactiveFormsModule,
     HttpClientModule,
+    PostsModule,
+    SharedModule
     /*FormsModule,*/
   ],
   providers: [

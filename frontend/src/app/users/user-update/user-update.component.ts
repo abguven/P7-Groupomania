@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UsersService } from 'src/app/services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, EMPTY, switchMap, tap, map } from 'rxjs';
-import { User } from 'src/app/models/User.model';
+import { User } from 'src/app/shared/models/User.model';
 
 
 @Component({
@@ -74,7 +74,7 @@ export class UserUpdateComponent implements OnInit {
     user.last_name = this.userForm.get("last_name")?.value;  
     
     user.uuid = this.userId; // This id must be get from url parameteres, not from session information !!!
-    console.log("Avatar URL: ",this.userForm.get("avatar")?.value);
+
     this.users.modifiyUser(user, this.userForm.get("avatar")?.value, this.ignorePassword , this.resetAvatar)
       .pipe(
         tap(()=>{
@@ -89,6 +89,11 @@ export class UserUpdateComponent implements OnInit {
       ).subscribe();
 
   } // onUpdate()
+
+  onCancel(){
+    this.userForm.reset();
+    this.router.navigateByUrl("/");
+  }
 
 
   onFileAdded(event: Event){ 

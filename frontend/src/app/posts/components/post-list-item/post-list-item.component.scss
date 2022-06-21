@@ -1,0 +1,53 @@
+@import "../../../shared/sass/variables";
+
+
+.img-round{
+    border-radius: 50rem;
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid white;
+    box-shadow: 1px 1px 10px black;
+}
+
+
+.time-tag{
+    text-align: right;
+    margin-top: -1.5rem;
+}
+
+
+.footer-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.like-buttons{
+    text-align: right;
+    margin: 1rem;
+    i{
+        font-size: 120%;
+    }
+    span{
+        margin-left: 0.3rem;
+    }
+}
+
+.like-icon{
+    color: gray;
+    cursor: pointer;
+    display: inline-block;
+    transition-delay: 100ms;
+
+    &:hover {
+        transform: scale(120%);
+    }
+}
+
+
+.liked{
+    color: $primary;
+}
+
+
+

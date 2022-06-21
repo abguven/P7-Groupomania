@@ -25,6 +25,6 @@ router.put("/:uuid",auth, multer, postController.updateById);
 router.delete("/:uuid",auth, postController.deleteById);
 
 // Like a post
-router.post("/:uuid/like/:like", auth, postController.likePost);
+router.post("/:uuid/like", auth, postController.likePost);
 
 module.exports = router;

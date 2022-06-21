@@ -1,0 +1,41 @@
+<h1 class="mt-2 text-center">Mettre à jour votre publication</h1>
+<bs-spinner *ngIf="loading"></bs-spinner>
+<div class="container" *ngIf="!loading">
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+            <input class="form-control" type="text" name="title" placeholder="Titre" formControlName="title">
+        </div>
+
+        <div class="input-group">
+            <textarea class="form-control" formControlName="content" name="content" id="content" cols="30" rows="5"
+                placeholder="Exprimez-vous">
+            </textarea>
+        </div>
+
+        <div class="input-group my-2">
+            <div class="post-image-container">
+                <button class="btn-delete" type="button" aria-label="Supprimer l'image"
+                    (click)="onDeleteImage()">
+                    <i class="bi bi-trash"></i>
+                </button>
+                <button class ="btn-upload" type="button" aria-label="Téléchager une image" (click)="imageInput.click()">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                </button>
+                <img class="img-fluid"  alt="Prévisualisation de l'image de publication"
+                        [src]="postPreview" (click)="imageInput.click()" 
+                        error-image defaultSrc={{defaultPostPreviewImage}}>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input class="form-control" type="file" id="postImage" name="postImage" accept="image/*"
+                (change)="onFileAdded($event)" #imageInput>
+        </div>
+
+        <div class="input-group">
+            <button class="btn btn-primary col me-1" type="submit">Sauvegarder</button>
+            <button class="btn btn-secondary col ms-1" type="button" (click)="onCancel()">Annuler</button>
+        </div>
+        <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+</div>

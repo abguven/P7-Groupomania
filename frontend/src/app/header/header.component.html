@@ -23,13 +23,25 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"
-          (click)="onLogout()" *ngIf="isAuth$ | async ">
+          (click)="onLogout()" *ngIf="isAuth$ | async">
           Déconnecter
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Mon compte</a>
+        <a class="nav-link" 
+          [routerLink]="'modify-profile/' + userId"
+          *ngIf="isAuth$ | async" >Mon profil
+        </a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" 
+          routerLink="/posts"
+          *ngIf="isAuth$ | async">Publications
+        </a>
+      </li>
+
+
     </ul>
   </div>
 </nav>

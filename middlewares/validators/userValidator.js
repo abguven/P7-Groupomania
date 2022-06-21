@@ -23,7 +23,7 @@ const schema = [
 
 async function validate(req, res, next) {
     // If user wants to update without changing his password 
-    console.log(`body.ignorePassword = ${req.body.ignorePassword} || req.method = ${req.method}`);
+    console.log(`body.ignorePassword = ${req.body.ignorePassword} || req.method = ${req.method}`);  // DEBUG
     if (req.body.ignorePassword !== "true".toUpperCase() || req.method !== "PUT") {
         await body("password")
             .isLength({ min: 6 })
@@ -32,7 +32,7 @@ async function validate(req, res, next) {
             .withMessage("Votre mot de passe contient trop de caractères.(Max. 20 autorisé)")
             .run(req);
     } else {
-        console.log('\x1b[33m Ignoring password validation ... \x1b[0m');
+        console.log('\x1b[33m Ignoring password validation ... \x1b[0m'); // DEBUG
     }
 
     const errors = validationResult(req);

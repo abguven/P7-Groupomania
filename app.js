@@ -16,10 +16,11 @@ const app = express();
 app.use(express.json());
 
 // Debugging information
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 
-// Static path for /images/
+// Static paths for images
 app.use("/images/avatars/", express.static(path.join(__dirname, "images/avatars")));
+app.use("/images/posts/", express.static(path.join(__dirname, "images/posts")))
 
 
 //app.use(helmet());
@@ -28,14 +29,12 @@ app.use("/images/avatars/", express.static(path.join(__dirname, "images/avatars"
  app.use(cors());
 
 
-// ROUTES
+ // ROUTES
 
 // User routes
 app.use("/api/v1",userRoutes);
 
 // Post routes
 app.use("/api/v1/posts", postRoutes);
-
-
 
 module.exports = app;

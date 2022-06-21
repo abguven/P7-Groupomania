@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { UsersService } from 'src/app/services/users.service';
-import { User } from 'src/app/models/User.model';
+import { User } from 'src/app/shared/models/User.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { catchError, EMPTY, switchMap, tap, map } from 'rxjs';
 import { Router } from '@angular/router';

@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Post }) {
+    static associate({ Post, PostLike }) {
       // User <=> Post 'one to many' relationship
       this.hasMany(Post, {
         foreignKey: {
@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false
         }
       })
+      // Many to Many relation with User through PostLike table
+      //this.belongsToMany(Post, { through: PostLike });
+      this.hasMany(PostLike);
     }
 
     toJSON() {

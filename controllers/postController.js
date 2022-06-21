@@ -2,6 +2,7 @@
 
 const { Post, User, PostLike } = require('../models');
 const errHandler = require('./errorHandler');
+const fs = require('fs');
 
 // New post
 exports.newPost = (req, res) => {
@@ -24,7 +25,6 @@ exports.newPost = (req, res) => {
         user_uuid: userId
     }).then((result) => {
         res.status(201).json(result);
-
     }).catch((error) => {
         errHandler(error, res, 400);
     });
@@ -38,7 +38,10 @@ exports.getAllPosts = (req, res) => {
 
     // If userId is provided as parameter list only this user's posts
     if (req.query.userId) {
-        Post.findAll({ where: { user_uuid: req.query.userId } })
+        Post.findAll({
+            where: { user_uuid: req.query.userId },
+            include: [{ model: PostLike, attributes: ["UserUuid"] }, { model: User, as: "user", attributes: ["user_name", "last_name", "avatar_url"] }]
+        })
             .then(posts => {
                 if (!posts.length) {
                     return res.status(404).json({ error: lang.ERR_NO_POST_FOUND_FOR_USER })
@@ -48,7 +51,7 @@ exports.getAllPosts = (req, res) => {
             .catch(error => errHandler(error, res));
     } else {
         // otherwise list all posts
-        Post.findAll()
+        Post.findAll({ include: [{ model: PostLike, attributes: ["UserUuid"] }, { model: User, as: "user", attributes: ["user_name", "last_name", "avatar_url"] }] })
             .then(posts => {
                 return res.status(200).json(posts);
             })
@@ -61,12 +64,14 @@ exports.getAllPosts = (req, res) => {
 // Get post by id
 exports.getById = (req, res) => {
     const postId = req.params.uuid;
-    Post.findByPk(postId, {
-        include: [{
-            model: User, // Join User model to results
-            attributes: { exclude: "password" } // Hide password in results
-        }]
-    })
+    Post.findByPk(postId,
+        {
+            include: [{
+                model: User, // Join User model to results
+                as: "user",
+                attributes: { exclude: "password" } // Hide password in results
+            }]
+        })
         .then(post => {
             if (post === null) {
                 return res.status(404).json({ error: lang.ERR_NO_POST_FOUND })
@@ -88,22 +93,42 @@ exports.updateById = async (req, res) => {
             return res.status(404).json({ error: lang.ERR_NO_POST_FOUND })
         }
 
-        // Authorisation check
-        if (req.auth.userId != post.user_uuid) {
+        // Authorisation check: only the creator of the post or admin has authorisation
+        if (req.auth.userId != post.user_uuid && !req.auth.isAdmin) {
             return res.status(403).json({ error: lang.ERR_NOT_AUTHORISED_FOR })
         }
 
         // Post found, so get data from request body to update the post 
-        const { title, content } = req.body;
-
-        if (req.file) {
-            post.post_image_url = `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`;
-        } else {
-            post.post_image_url = "";
-        }
-
+        const { title, content, resetPostImage } = req.body;
         post.title = title;
         post.content = content;
+
+        // Update post image url
+        const oldPostImageUrl = post.post_image_url;
+        if (req.file) {
+            // Set new file's url
+            post.post_image_url = `${req.protocol}://${req.get('host')}/images/posts/${req.file.filename}`;
+        } else { // User wants to delete the post image and doesn't want to add new one
+            if (resetPostImage) {
+                post.post_image_url = "";
+            }
+        } // if (req.file)
+
+        // If user has updated the post image, delete the old one if exists
+        if (oldPostImageUrl && (post.post_image_url !== oldPostImageUrl)) {
+            // Try deleting old file if exists
+            const oldFileName = oldPostImageUrl.split("images/posts")[1];
+            const oldFilePath = "images/posts" + oldFileName;
+            // Check if the file exists
+            fs.stat(oldFilePath, function (err, stat) {
+                if (!err && stat.isFile()) {
+                    fs.unlinkSync(oldFilePath); // Delete file if exists
+                    console.log(`${oldFilePath} deleted`); // DEBUG
+                } else {
+                    console.log(`Can't delete ${oldFilePath}`); // It's an internal error, no need to return it, just log it
+                }
+            });
+        }
 
         await post.save();
         return res.status(200).json({ post });
@@ -127,6 +152,15 @@ exports.deleteById = (req, res) => {
             if (req.auth.userId != post.user_uuid && !req.auth.isAdmin) {
                 return res.status(403).json({ error: lang.ERR_NOT_AUTHORISED_FOR })
             }
+            // Delete post image if exists
+            if (post.post_image_url){
+                const imagePath = "images/posts/" + post.post_image_url.split("/images/posts")[1];
+                fs.stat(imagePath, function(err,stat){
+                    if (!err && stat.isFile()){
+                        fs.unlinkSync(imagePath);
+                    }
+                }) 
+            }            
             // Delete the post
             post.destroy();
             res.status(200).json({ message: lang.MSG_POST_DELETED })
@@ -149,10 +183,10 @@ exports.likePost = async (req, res) => {
 
         // Check if user already liked this post
         const postLikesOfUser = await PostLike.findAll({
-            where: { post_Id: postId, user_id: userId }
+            where: { PostUuid: postId, UserUuid: userId }
         })
 
-        const like = req.params.like;
+        const like = req.body.like;
         if (like == 1) {
             // User wants to like the post
             if (postLikesOfUser.length > 0) { // but he already liked this before, so return an error
@@ -160,7 +194,7 @@ exports.likePost = async (req, res) => {
             }
 
             // Create a record of like in "postlikes" table
-            const result = await PostLike.create({ post_id: postId, user_id: userId });
+            const result = await PostLike.create({ PostUuid: postId, UserUuid: userId });
             if (result === null) {
                 throw new Error(lang.ERR_DB_UPDATE_ERROR);
             }
@@ -171,13 +205,13 @@ exports.likePost = async (req, res) => {
 
         } else if (like == 0) {
             // User wants to unlike the post
-            if( postLikesOfUser.length == 0 ){ // but he didn't liked the post before or he already unliked
-                return res.status(400).json({ error: lang.ERR_CANT_UNLIKE})
+            if (postLikesOfUser.length == 0) { // but he didn't liked the post before or he already unliked
+                return res.status(400).json({ error: lang.ERR_CANT_UNLIKE })
             }
 
             // Delete his like record from "postlikes" table
             postLikesOfUser[0].destroy();
-            
+
             // Update the number of likes in "posts" table
             postToLike.decrement("likes", { by: 1 });
             return res.status(201).json({ message: lang.MSG_LIKE_OK })

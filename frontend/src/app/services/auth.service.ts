@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, tap } from 'rxjs';
 import { baseUrl } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
-import { Credentials } from "../models/Credential.model";
+import { Credentials } from "../shared/models/Credential.model";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class AuthService {
       (`${baseUrl}/login`, { email: email, password: password })
       .pipe(
         tap( (credentials) => {
-          console.log("%c userId", "color: orange" , credentials.userId);
+          //console.log("%c userId", "color: orange" , credentials.userId);
           this.setCredentials(credentials);
           this.isAuth$.next(true); // ??????????????????????????????????
         })
@@ -33,7 +33,7 @@ export class AuthService {
 
   
   logout(){
-    this.setCredentials({ token:"", userId:"" });
+    this.clearCredentials();
     this.isAuth$.next(false);
     this.router.navigate(["login"]);
   } // logout()  
@@ -42,15 +42,33 @@ export class AuthService {
   setCredentials( credentials: Credentials){
     this.cookies.set("token", credentials.token);
     this.cookies.set("userId", credentials.userId);
+    this.cookies.set("userRole", credentials.userRole);
+  }
+
+  clearCredentials(){
+    this.cookies.deleteAll();
   }
 
   getCredentials():Credentials{
     const token = this.cookies.get("token");
     const userId = this.cookies.get("userId");
+    const userRole = this.cookies.get("userRole");
+    //console.log("%c userId", "color: yellow" , userId);
+    return { userId, token, userRole };
+  }
 
-    console.log("%c userId", "color: yellow" , userId);
+  /**
+   * Check if logged user is an admin
+   * @returns 
+   */
+  isAdmin(): boolean{
+    const { userRole } = this.getCredentials();
+    return this.isAuth() && userRole === "admin";
+  }
 
-    return { userId, token };
+  isAuth():boolean{
+    const { userId, token } = this.getCredentials();
+    return !!token && !!userId;
   }
 
 

@@ -9,17 +9,22 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ User }) {
+    static associate({ User, PostLike }) {
       // define association here
       
       // User <=> Post 'one to many' relationship
       this.belongsTo(User, {
+        as: "user", // Alias for association
         foreignKey: {
           name: "user_uuid",
           type: DataTypes.UUID,
           allowNull: false
         }
       });
+      // Many to Many relation with User through PostLike table
+      //this.belongsToMany(User, { through: PostLike });
+      this.hasMany(PostLike);
+
     }
   }
   Post.init({

@@ -60,37 +60,44 @@ exports.updateById = async (req, res) => {
         }
 
         user.email = email;
-        if (password){
-            console.log(`Setting password to : ${password}`);
+        if (password) {
+            console.log(`Setting password to : ${password}`); // DEBUG
             user.password = password;
         }
         user.user_name = user_name;
         user.last_name = last_name;
 
-
-        // Update "user.avatar_url" with new file and delete the old file
+        // Update "user.avatar_url"
+        const oldUserAvatarUrl = user.avatar_url;
         if (req.file) {
-            // Try deleting old file
-            const oldFileName = user.avatar_url.split("/images/avatars")[1];
-            const oldFilePath = "images/avatars/" + oldFileName;
-            
-            // Check if the file exists
-            fs.stat(oldFilePath, function (err, stat) {
-                if (err == null) {
-                    fs.unlinkSync(oldFilePath); // Delete file if exists
-                    console.log(`${oldFilePath} deleted`)
-                } else {
-                    console.log(`Can't delete ${oldFilePath} `)
-                }
-            });
-
             // Set new file's url
             user.avatar_url = `${req.protocol}://${req.get('host')}/images/avatars/${req.file.filename}`;
-        }else{
-            if (resetAvatar){
+        } else { // User wants to delete the avatar image and doesn't want to add new one
+            if (resetAvatar) {
                 user.avatar_url = "";
             }
-        } 
+        } // if (req.file)
+
+        // If user has updated his profile image, delete the old one if exists
+        if (oldUserAvatarUrl && (user.avatar_url !== oldUserAvatarUrl)) {
+            // Try deleting old file if exists
+            const oldFileName = oldUserAvatarUrl.split("/images/avatars")[1];
+            const oldFilePath = "images/avatars/" + oldFileName;
+            console.log(`oldFileName: ${oldFileName} ||||  oldFilePath: ${oldFilePath}`); // DEBUG
+
+            // Delete file if exists
+            fs.stat(oldFilePath, function (err, stat) {
+                if (err) { // It's an internal error, no need to return it, just log it
+                    console.log(`Can't delete ${oldFilePath} , error : ${err}`);
+                } else {
+                    if (stat.isFile()) {
+                        fs.unlinkSync(oldFilePath); // Delete file if exists
+                        console.log(`${oldFilePath} deleted`) // DEBUG    
+                    }
+                }
+            });
+        }
+
         await user.save();
         return res.status(200).json({ user });
 
@@ -168,7 +175,7 @@ exports.login = (req, res) => {
                 { expiresIn: "24h" }
             );
 
-            res.status(200).json({ userId: user.uuid, token: token });
+            res.status(200).json({ userId: user.uuid, token: token, userRole: user.role });
         })
         .catch(err => errHandler(error, res))
 
