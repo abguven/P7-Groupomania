@@ -1,5 +1,5 @@
 <h1 class="mt-2 text-center">Mettre à jour votre publication</h1>
-<bs-spinner *ngIf="loading"></bs-spinner>
+<app-bs-spinner *ngIf="loading"></app-bs-spinner>
 <div class="container" *ngIf="!loading">
     <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
         <div class="input-group">
@@ -23,7 +23,7 @@
                 </button>
                 <img class="img-fluid"  alt="Prévisualisation de l'image de publication"
                         [src]="postPreview" (click)="imageInput.click()" 
-                        error-image defaultSrc={{defaultPostPreviewImage}}>
+                        errorImage defaultSrc={{defaultPostPreviewImage}}>
             </div>
         </div>
 

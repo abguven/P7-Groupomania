@@ -6,7 +6,7 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input, Renderer2 } 
  * @Input defaultSrc : default image to set as src to image element
  */
 @Directive({
-    selector: "[error-image]"
+    selector: "[errorImage]"
 })
 export class ErrorImageDirective implements AfterViewInit{
     @Input() defaultSrc! :string;

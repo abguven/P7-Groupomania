@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'bs-spinner',
+  selector: 'app-bs-spinner',
   templateUrl: './bs-spinner.component.html',
   styleUrls: ['./bs-spinner.component.scss']
 })
-export class BsSpinnerComponent implements OnInit {
+export class BsSpinnerComponent{
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }
