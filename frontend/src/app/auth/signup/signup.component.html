@@ -4,55 +4,55 @@
         <div class="row">
             <div class="col-12 col-md-3 col-lg-2">
 
-                <div class="row">
-                    <div class="form-group col-4 col-md-12">
-                        <h2 class="mt-3">S'inscrire</h2>
-                        <p class="text-muted">C'est rapide et facile</p>
+                <div class="form-group">
+                    <h2 class="mt-3">S'inscrire</h2>
+                    <p class="text-muted">C'est rapide et facile</p>
+                </div>
+                <div class="form-group">
+                    <div class="form-image-container">
                         <input (change)="onFileAdded($event)" #imageInput type="file" class="form-control"
                             accept="image/*" id="avatar" name="avatar">
-                        <img [src]="avatarPreview" alt="Photo de profil" class="signupForm__profilePhoto mb-2"
+                        <img [src]="avatarPreview" alt="Photo de profil"
                             (click)="imageInput.click()">
-                    </div>
+                        <button class="btn-delete" type="button" aria-label="Supprimer l'image"
+                            (click)="onDeleteImage()">
+                            <i class="bi bi-trash"></i>
+                        </button>
 
-                    <div class="col-10">
-                        <button class="btn btn-primary" (click)="onDeleteImage()">
-                            Supprimer
+                        <button class="btn-upload" type="button" aria-label="Télécharger une photo de profil"
+                            (click)="imageInput.click()">
+                            <i class="bi bi-cloud-arrow-up"></i>
                         </button>
-                        <p class="my-1">ou</p>
-                        <button class="btn btn-secondary" (click)="imageInput.click()">
-                            Modifier
-                        </button>
-                        <p class="my-1">Votre photo de profil</p>
                     </div>
                 </div>
+
             </div>
+
             <div class="col-md-9 col-lg-10">
                 <div class="form-group mt-3">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" formControlName="email">
+                    <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
                 </div>
                 <div class="form-group">
-                    <label for="user_name">Prénom ou pseudo</label>
-                    <input type="text" class="form-control" id="user_name" formControlName="user_name">
+                    <input type="text" class="form-control" id="user_name" placeholder="Prénom ou pseudo"
+                        formControlName="user_name">
                 </div>
                 <div class="form-group">
-                    <label for="last_name">Nom de famille</label>
-                    <input type="text" class="form-control" id="last_name" formControlName="last_name">
+                    <input type="text" class="form-control" id="last_name" placeholder="Nom de famille"
+                        formControlName="last_name">
                 </div>
                 <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="text" class="form-control" id="password" formControlName="password">
+                    <input type="text" class="form-control" id="password" placeholder="Mot de passe"
+                        formControlName="password">
                 </div>
                 <div class="form-group">
-                    <label for="password">Confirmer votre mot de passe</label>
                     <input type="text" class="form-control" id="passwordConfirmation"
-                        formControlName="passwordConfirmation">
+                        placeholder="Confirmez votre mot de passe" formControlName="passwordConfirmation">
                 </div>
-                
+
                 <button class="btn btn-primary mt-2" [disabled]="userForm.invalid" (click)="onSubmit()">
                     Inscription
                 </button>
-                <div class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</div>            
+                <p class="text-danger mt-2" *ngIf="errorMsg">{{ errorMsg }}</p>
             </div>
         </div>
     </form>

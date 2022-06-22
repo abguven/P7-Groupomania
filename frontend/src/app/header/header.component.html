@@ -1,12 +1,14 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-  <a class="navbar-brand" href="#"><img src="../../assets/logos/icon-left-font_min.svg"
-      class="d-inline-block align-top logo" alt=""></a>
-  <button class="navbar-toggler d-lg-none" type="button" (click)="isCollapsed = !isCollapsed"
-    [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsExampleDefault" aria-label="Toggle navigation">
+  <a class="navbar-brand" routerLink="/">
+    <img src="../../assets/logos/icon-left-font_min.svg"
+      class="d-inline-block align-top logo" alt="logo de Groupomania">
+  </a>
+  <button class="navbar-toggler d-lg-none me-3" type="button" (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed" aria-controls="headerNavbar" aria-label="Ouvrir menu de navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault" [ngbCollapse]="isCollapsed">
+  <div class="collapse navbar-collapse ms-4" id="headerNavbar" [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <a class="nav-link"
@@ -16,13 +18,13 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"
+        <a class="nav-link"
           routerLink="login" routerLinkActive="active" *ngIf="!( isAuth$ | async )">
           Se connecter
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"
+        <a class="nav-link"
           (click)="onLogout()" *ngIf="isAuth$ | async">
           Déconnecter
         </a>
@@ -40,8 +42,6 @@
           *ngIf="isAuth$ | async">Publications
         </a>
       </li>
-
-
     </ul>
   </div>
 </nav>

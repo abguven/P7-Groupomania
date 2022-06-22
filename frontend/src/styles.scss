@@ -14,20 +14,48 @@
 
 
 // Custom styles
-form label{
-    margin-bottom: 0;
+
+button i{
+    font-size: 120%;
 }
 
 form input{
     margin: 0.5rem auto;
 }
 
-form .signupForm__profilePhoto{
-    display:block;
-    max-height: 130px;
-    //margin-top: 10px;
-}
 
 form input[type="file"] {
     display: none;
 }
+
+$btn-icon-size: 35px;
+.form-image-container{
+    position: relative;
+    img{
+        width: 100%;
+        border-radius: 10px;
+        display: block;
+        min-height: $btn-icon-size*3;
+        max-height: 200px;
+    }
+    button{
+        width: $btn-icon-size;
+        height: $btn-icon-size;
+        box-shadow: 2px 2px 10px gray;
+        border: 1px solid $primary;
+        outline: none;
+        color: $primary;
+        background-color: white;
+        border-radius: 2rem;
+        position: absolute;
+        &.btn-upload{
+            bottom: 5px;
+            right: 5px;
+        }
+        &.btn-delete{
+            top: 5px;
+            right: 5px;
+        }
+    }
+}
+

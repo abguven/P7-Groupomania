@@ -1,10 +1,11 @@
 @import "../../../shared/sass/variables";
 
 
+$avatar-image-size: 48px;
 .img-round{
     border-radius: 50rem;
-    width: 4rem;
-    height: 4rem;
+    width: $avatar-image-size;
+    height: $avatar-image-size;
     border: 1px solid white;
     box-shadow: 1px 1px 10px black;
 }

@@ -4,12 +4,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { BsSpinnerComponent } from '../tools/bs-spinner/bs-spinner.component';
 import { ErrorImageDirective } from './diretives/error-image.directive';
+import { AvatarAltPipe } from './pipes/avatar-alt.pipe';
 
 
 
 @NgModule({
   declarations: [
     TimeAgoPipe,
+    AvatarAltPipe,
     BsSpinnerComponent,
     ErrorImageDirective
   ],
@@ -20,6 +22,7 @@ import { ErrorImageDirective } from './diretives/error-image.directive';
   exports:[
     ReactiveFormsModule,
     TimeAgoPipe,
+    AvatarAltPipe,
     BsSpinnerComponent,
     ErrorImageDirective
   ]
