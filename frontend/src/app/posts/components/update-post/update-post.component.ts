@@ -42,7 +42,6 @@ export class UpdatePostComponent implements OnInit {
         }
         this.postId = post.uuid;
         this.postForm = this.fb.group(({
-          title : [post.title, Validators.required],
           content: [post.content, Validators.required],
           postImage: [post.post_image_url]
         }));
@@ -78,7 +77,6 @@ export class UpdatePostComponent implements OnInit {
   onSubmit(){
     this.loading = true;
     const post = new Post();
-    post.title = this.postForm.get("title")?.value;
     post.content = this.postForm.get("content")?.value;
     this.postServices.modifiyPost(post, this.postForm.get("postImage")?.value, this.postId, this.resetPostImage).pipe(
       tap( ()=> {

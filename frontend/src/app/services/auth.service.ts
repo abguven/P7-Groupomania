@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, tap } from 'rxjs';
 import { baseUrl } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { Credentials } from "../shared/models/Credential.model";
@@ -24,9 +24,8 @@ export class AuthService {
       (`${baseUrl}/login`, { email: email, password: password })
       .pipe(
         tap( (credentials) => {
-          //console.log("%c userId", "color: orange" , credentials.userId);
           this.setCredentials(credentials);
-          this.isAuth$.next(true); // ??????????????????????????????????
+          this.isAuth$.next(true); 
         })
       );
   } // loginUser(email: string, password: string)

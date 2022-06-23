@@ -99,8 +99,7 @@ exports.updateById = async (req, res) => {
         }
 
         // Post found, so get data from request body to update the post 
-        const { title, content, resetPostImage } = req.body;
-        post.title = title;
+        const { content, resetPostImage } = req.body;
         post.content = content;
 
         // Update post image url

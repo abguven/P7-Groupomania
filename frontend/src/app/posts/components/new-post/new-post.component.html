@@ -1,9 +1,5 @@
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
     <div class="input-group">
-        <input class="form-control" type="text" name="title" placeholder="Titre" 
-            formControlName="title">
-    </div>
-    <div class="input-group">
         <textarea class="form-control" formControlName="content"
             name="content" id="content" cols="30" rows="5"
             placeholder="Exprimez-vous">
@@ -11,9 +7,12 @@
     </div>
     <div class="input-group">
         <input class="form-control" type="file" id="postFile" accept="image/*" aria-label="télécharger une photo pour la publication"
-        formControlName="postImage" (change)="onFileAdded($event)">
+        (change)="onFileAdded($event)">
     </div>
     <div class="form-group text-end">
-        <button class="btn btn-primary" type="submit">Publier</button>
+        <button class="btn btn-primary" type="submit"
+            [disabled]="postForm.invalid">
+            Publier
+        </button>
     </div>
 </form>

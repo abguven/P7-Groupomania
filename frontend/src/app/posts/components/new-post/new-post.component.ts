@@ -23,8 +23,7 @@ export class NewPostComponent implements OnInit {
 
   ngOnInit(): void {
     this.postForm = this.fb.group(({
-      title: [null, Validators.required],
-      content: [null,Validators.required],
+      content: [null,[Validators.required, Validators.minLength(10)]],
       postImage:[null]
     }))
   }
@@ -37,7 +36,6 @@ export class NewPostComponent implements OnInit {
 
   onSubmit(){
     const newPost = new Post();
-    newPost.title = this.postForm.get("title")?.value;
     newPost.content = this.postForm.get("content")?.value;
     // newPost.user_uuid = this.auth.getCredentials().userId;  ***** TODO DELETE, No need to add userid, backend already does this ***** 
     this.postService.addNewPost(newPost, this.postForm.get("postImage")?.value).pipe(

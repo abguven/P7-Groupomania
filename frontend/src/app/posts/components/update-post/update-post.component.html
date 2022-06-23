@@ -3,15 +3,10 @@
 <div class="container" *ngIf="!loading">
     <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
         <div class="input-group">
-            <input class="form-control" type="text" name="title" placeholder="Titre" formControlName="title">
-        </div>
-
-        <div class="input-group">
             <textarea class="form-control" formControlName="content" name="content" id="content" cols="30" rows="5"
                 placeholder="Exprimez-vous">
             </textarea>
         </div>
-
         <div class="input-group my-2">
             <div class="post-image-container">
                 <button class="btn-delete" type="button" aria-label="Supprimer l'image"

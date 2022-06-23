@@ -18,7 +18,6 @@ export class PostService {
   addNewPost(post: Post, postImage: File):Observable<Post>{
     const formData = new FormData();
     // Don't need to add userId because backened does it
-    formData.append("title", post.title);
     formData.append("content", post.content);
     formData.append("postImage", postImage);
     return this.http.post<Post>(`${baseUrl}/posts`, formData);
@@ -26,7 +25,6 @@ export class PostService {
 
   modifiyPost(post:Post, postImage:File|string, postId:string, resetPostImage:boolean=false){
     const formData = new FormData();
-    formData.append("title", post.title);
     formData.append("content", post.content);
     if (resetPostImage){
       formData.append("resetPostImage", "TRUE");
