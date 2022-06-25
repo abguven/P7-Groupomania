@@ -42,3 +42,5 @@ mysql> SOURCE <le chemin exact vers le fichier "data_dump.sql">;
 
 -Démarrer le serveur backend
 `npm start`
+
+-Naviguer sur http://localhost:4200
