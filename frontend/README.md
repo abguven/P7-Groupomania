@@ -1,27 +1,44 @@
-# Frontend
+# Projet 7 - Créer un réseau social pour l'entreprise Groupomania
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.2.
+## Installation
+Outils nécessaires:
+  > NodeJs, MySql Server
 
-## Development server
+### Installation Frontend
+(si vous êtes sous Windows, il faudrait peut être définir la stratégies d’exécution comme **_RemoteSigned_**)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+-Parcourir dans le classeur /frontend
 
-## Code scaffolding
+-Installer les modules **Node**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+`npm install`
 
-## Build
+-Installer @angular/cli 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+`npm install -g @angular/cli`
 
-## Running unit tests
+-Démarrer le serveur angular
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`ng serve`
 
-## Running end-to-end tests
+### Installation Backend
+-Parcourir dans le classeur /backend
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+-Installer les modules **Node**
 
-## Further help
+`npm install`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+-Vérifier si votre serveur MySQL est démarré
+
+-Saisir vos identifiants de connexion dans le fichier /backend/config/config.json
+
+-Injecter les données fournies dans le fichier "data_dump.sql"
+
+```
+mysql> CREATE DATABASE database_test;
+mysql> USE database_test;
+mysql> SOURCE <le chemin exact vers le fichier "data_dump.sql">;
+```
+
+-Démarrer le serveur backend
+`npm start`
