@@ -1,37 +1,44 @@
-# P7 Réseau social d’entreprise pour Groupomania
+# Projet 7 - Créer un réseau social pour l'entreprise Groupomania
 
-## Installation Frontend
-Installer
+## Installation
+Outils nécessaires:
+  > NodeJs, MySql Server
 
+### Installation Frontend
+(si vous êtes sous Windows, il faudrait peut être définir la stratégies d’exécution comme **_RemoteSigned_**)
 
+-Parcourir dans le classeur /frontend
 
-## Installation Backend
+-Installer les modules **Node**
 
+`npm install`
 
-# Frontend
+-Installer @angular/cli 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.2.
+`npm install -g @angular/cli`
 
-## Development server
+-Démarrer le serveur angular
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+`ng serve`
 
-## Code scaffolding
+### Installation Backend
+-Parcourir dans le classeur /backend
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+-Installer les modules **Node**
 
-## Build
+`npm install`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+-Vérifier si votre serveur MySQL est démarré
 
-## Running unit tests
+-Saisir vos identifiants de connexion dans le fichier /backend/config/config.json
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+-Injecter les données fournies dans le fichier "data_dump.sql"
 
-## Running end-to-end tests
+```
+mysql> CREATE DATABASE database_test;
+mysql> USE database_test;
+mysql> SOURCE <le chemin exact vers le fichier "data_dump.sql">;
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+-Démarrer le serveur backend
+`npm start`
