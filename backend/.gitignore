@@ -1,5 +1,6 @@
 node_modules
 temp
 log.txt
-images
-.env
+# .env  ==> Uncomment on production
+# config/config.json   ==> Uncomment on production
+# images ==> ==> Uncomment on production
