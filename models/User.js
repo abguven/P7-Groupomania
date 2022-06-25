@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       })
       // Many to Many relation with User through PostLike table
       //this.belongsToMany(Post, { through: PostLike });
-      this.hasMany(PostLike);
+      this.hasMany(PostLike, { onDelete: "CASCADE"} );
     }
 
     toJSON() {
@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       unique: true,
+      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,

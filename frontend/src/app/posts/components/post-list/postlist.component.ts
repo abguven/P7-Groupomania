@@ -3,7 +3,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from "rxjs/operators";
 import { PostService } from '../../services/post.service';
 import { PostWithUserInfo } from 'src/app/shared/models/PostWithUserInfo.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { Credentials } from 'src/app/shared/models/Credential.model';
 
 

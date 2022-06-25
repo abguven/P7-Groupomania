@@ -22,7 +22,7 @@ const schema = [
 ]
 
 async function validate(req, res, next) {
-    // If user wants to update without changing his password 
+    // Add password validation only if user wants to update his password
     console.log(`body.ignorePassword = ${req.body.ignorePassword} || req.method = ${req.method}`);  // DEBUG
     if (req.body.ignorePassword !== "true".toUpperCase() || req.method !== "PUT") {
         await body("password")

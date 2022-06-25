@@ -14,7 +14,6 @@ router.post("/login", userController.login);
 // New user
 router.post("/users",
         multer,
-        /*(req, res, next) => {console.log("req.body: ", req.body); next() ;},*/
         userValidator.schema,
         userValidator.validate,
         userController.signup

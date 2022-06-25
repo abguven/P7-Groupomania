@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { User } from 'src/app/shared/models/User.model';
 import { catchError, throwError,tap } from 'rxjs';
-import { baseUrl } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class UsersService {
     formData.append("user_name", user.user_name);
     formData.append("last_name", user.last_name);
     return this.http.post<{ user: User }> // TODO : Check return value
-      (`${baseUrl}/users`, formData).pipe(
+      (`${environment.baseUrl}/users`, formData).pipe(
         catchError(error => throwError(error.error.error)) // Reformat the returned error value
       );
   }
@@ -55,7 +55,7 @@ export class UsersService {
     formData.append("user_name", user.user_name);
     formData.append("last_name", user.last_name);
     return this.http.put // TODO : Check return value
-      (`${baseUrl}/users/` + user.uuid, formData) // TODO : We send the userID too, check if this modifiy the id in the DB
+      (`${environment.baseUrl}/users/` + user.uuid, formData) // TODO : We send the userID too, check if this modifiy the id in the DB
       .pipe(
         catchError(error => throwError(error.error.error))
       );
@@ -67,7 +67,7 @@ export class UsersService {
  * @returns Observable
  */
   getUserById(id:string) {
-    return this.http.get<User>(`${baseUrl}/users/` + id)
+    return this.http.get<User>(`${environment.baseUrl}/users/` + id)
       .pipe(catchError(error => throwError(error.error.error)));
   } // getUserById(user: User, avatar: File | string)
 

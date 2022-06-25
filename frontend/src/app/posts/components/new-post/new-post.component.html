@@ -1,8 +1,8 @@
 <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
     <div class="input-group">
         <textarea class="form-control" formControlName="content"
-            name="content" id="content" cols="30" rows="5"
-            placeholder="Exprimez-vous">
+            name="content" id="content" cols="30" rows="5" placeholder="Exprimez-vous"
+            trimInput>
         </textarea>
     </div>
     <div class="input-group">
@@ -11,8 +11,11 @@
     </div>
     <div class="form-group text-end">
         <button class="btn btn-primary" type="submit"
-            [disabled]="postForm.invalid">
+            [disabled]="postForm.invalid"
+            *ngIf="!loading">
             Publier
         </button>
+        <app-bs-spinner *ngIf="loading"></app-bs-spinner>
+        <app-error-panel *ngIf="errorMessage" errorMessage="{{ errorMessage }}"></app-error-panel>
     </div>
 </form>

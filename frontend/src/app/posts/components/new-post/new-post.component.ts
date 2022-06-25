@@ -1,10 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { map } from "rxjs/operators";
 import { Post } from 'src/app/shared/models/Post.model';
 import { PostService } from '../../services/post.service';
-import { catchError, EMPTY, switchMap, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { catchError, EMPTY, Observable, switchMap, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-new-post',
@@ -15,17 +14,19 @@ export class NewPostComponent implements OnInit {
 
   @Output() refresh = new EventEmitter<true>();
 
+  loading = false;
+  errorMessage!: string;
   postForm!: FormGroup;
   constructor(private fb: FormBuilder,
-              private postService: PostService,
-              private auth: AuthService,
-              private router: Router) { }
+              private postService: PostService
+              ) { }
 
   ngOnInit(): void {
+    this.errorMessage = "";
     this.postForm = this.fb.group(({
       content: [null,[Validators.required, Validators.minLength(10)]],
       postImage:[null]
-    }))
+    }))  
   }
 
   onFileAdded(event: Event){ 
@@ -34,17 +35,21 @@ export class NewPostComponent implements OnInit {
     this.postForm.updateValueAndValidity();
   } // onFileAdded(event: Event)
 
-  onSubmit(){
+  
+  onSubmit() {
     const newPost = new Post();
     newPost.content = this.postForm.get("content")?.value;
-    // newPost.user_uuid = this.auth.getCredentials().userId;  ***** TODO DELETE, No need to add userid, backend already does this ***** 
+    this.loading = true;
+    // No need to add userid, backend already does this
     this.postService.addNewPost(newPost, this.postForm.get("postImage")?.value).pipe(
-      tap((post)=>{
+      tap(() => {
+        this.loading = false;
         this.postForm.reset();
-        this.refresh.emit(true);      
+        this.refresh.emit(true); // Emit refresh signal to the parent     
       }),
       catchError(error => {
-        console.log(error);
+        this.loading = false;
+        this.errorMessage = error;
         return EMPTY;
       })
     ).subscribe();

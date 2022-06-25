@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup, Validators } from '@angular/forms';
-import { UsersService } from 'src/app/services/users.service';
+import { UsersService } from 'src/app/users/services/users.service';
 import { User } from 'src/app/shared/models/User.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { catchError, EMPTY, switchMap, tap, map } from 'rxjs';
 import { Router } from '@angular/router';
-import { CustomValidators } from 'src/app/tools/customValidators'; 
+import { CustomValidators } from 'src/app/shared/validators/customValidators'; 
 
 @Component({
   selector: 'app-signup',
@@ -31,7 +31,7 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {
     this.avatarPreview = this.defaultAvatarPreviewImage;
     this.userForm = this.formBuilder.group({
-      email: [null, [Validators.required,Validators.email] ],
+      email: [null, [Validators.required, Validators.email] ],
       user_name: [null, Validators.required],
       last_name: [null],
       avatar: [null],

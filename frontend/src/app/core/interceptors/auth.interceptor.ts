@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, ObservableInput, throwError } from 'rxjs';
-import { tap, catchError } from "rxjs/operators";
+import { Observable, throwError } from 'rxjs';
+import { catchError } from "rxjs/operators";
 import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -30,9 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return throwError(() => error)
       })
     )
-
-
-
 
   }
 } // export class AuthInterceptor

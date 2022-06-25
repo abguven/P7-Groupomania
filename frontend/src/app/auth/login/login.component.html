@@ -12,6 +12,7 @@
     <button class="btn btn-primary mt-2" [disabled]="loginForm.invalid" (click)="onLogin()">
         Se connecter
     </button>
-    <p class="text-danger" *ngIf="errorMsg">{{ errorMsg }}</p>
+    <app-bs-spinner *ngIf="loading"></app-bs-spinner>
+    <app-error-panel *ngIf="errorMessage" errorMessage="{{ errorMessage }}"></app-error-panel>
 
 </form>

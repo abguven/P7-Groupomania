@@ -30,22 +30,23 @@
 
             <div class="col-md-9 col-lg-10">
                 <div class="form-group mt-3">
-                    <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+                    <input type="text" class="form-control" id="email" placeholder="Email" 
+                        formControlName="email" trimInput>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="user_name" placeholder="Prénom ou pseudo"
-                        formControlName="user_name">
+                        formControlName="user_name" trimInput>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" id="last_name" placeholder="Nom de famille"
-                        formControlName="last_name">
+                        formControlName="last_name" trimInput>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="password" placeholder="Mot de passe"
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe"
                         formControlName="password">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="passwordConfirmation"
+                    <input type="password" class="form-control" id="passwordConfirmation"
                         placeholder="Confirmez votre mot de passe" formControlName="passwordConfirmation">
                 </div>
 

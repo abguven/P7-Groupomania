@@ -9,20 +9,31 @@ const auth = require('../middlewares/auth');
 
 
 // New post
-router.post("/",auth, multer, postController.newPost);
-
-
-// Get all posts
-router.get("/",auth, postController.getAllPosts);
-
-// Get post by id
-router.get("/:uuid",auth, postController.getById);
+router.post("/",
+            auth,
+            multer,
+            postValidator.schema,
+            postValidator.validate,
+            postController.newPost
+);
 
 // Update post
-router.put("/:uuid",auth, multer, postController.updateById);
+router.put("/:uuid",
+            auth,
+            multer,
+            postValidator.schema,
+            postValidator.validate,
+            postController.updateById);
+
+// Get all posts
+router.get("/", auth, postController.getAllPosts);
+
+// Get post by id
+router.get("/:uuid", auth, postController.getById);
+
 
 // Delete post
-router.delete("/:uuid",auth, postController.deleteById);
+router.delete("/:uuid", auth, postController.deleteById);
 
 // Like a post
 router.post("/:uuid/like", auth, postController.likePost);

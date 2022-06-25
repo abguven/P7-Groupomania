@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, EMPTY, tap } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
   
   loading!: boolean;
   loginForm!: FormGroup;
-  errorMsg!: string;
+  errorMessage!: string;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
         catchError( error => {
           this.loading = false;
           console.log("error: ", error);
-          this.errorMsg = error.error.error;
+          this.errorMessage = error.error.error;
           return EMPTY;
         })
       ).subscribe();

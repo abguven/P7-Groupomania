@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       // Many to Many relation with User through PostLike table
       //this.belongsToMany(User, { through: PostLike });
-      this.hasMany(PostLike);
+      this.hasMany(PostLike, { onDelete: "CASCADE" });
 
     }
   }

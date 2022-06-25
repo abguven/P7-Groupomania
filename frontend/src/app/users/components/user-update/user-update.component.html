@@ -38,15 +38,17 @@
                 </div>
                 <div class="form-group" *ngIf="!ignorePassword">
                     <label for="password">Mot de passe</label>
-                    <input type="text" class="form-control" id="password" formControlName="password">
+                    <input type="password" class="form-control" id="password" formControlName="password">
                 </div>
                 <div class="form-group">
                     <label for="user_name">Prénom ou pseudo</label>
-                    <input type="text" class="form-control" id="user_name" formControlName="user_name">
+                    <input type="text" class="form-control" id="user_name" 
+                        formControlName="user_name" trimInput>
                 </div>
                 <div class="form-group">
                     <label for="last_name">Nom de famille</label>
-                    <input type="text" class="form-control" id="last_name" formControlName="last_name">
+                    <input type="text" class="form-control" id="last_name" 
+                        formControlName="last_name" trimInput>
                 </div>
                 <div class="row">
                     <button class="btn btn-primary m-2 col" [disabled]="userForm.invalid" (click)="onUpdate()">

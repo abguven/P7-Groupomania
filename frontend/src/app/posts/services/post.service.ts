@@ -1,11 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, switchMap, Subject } from 'rxjs';
-import { map,tap } from "rxjs/operators";
+import { EMPTY, Observable, Subject, throwError } from 'rxjs';
+import { catchError, delay, map } from "rxjs/operators";
 import { Post } from 'src/app/shared/models/Post.model';
 import { PostWithUserInfo } from "src/app/shared/models/PostWithUserInfo.model";
-import { User } from 'src/app/shared/models/User.model';
-import { baseUrl } from "../../../environments/environment";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,9 @@ export class PostService {
     // Don't need to add userId because backened does it
     formData.append("content", post.content);
     formData.append("postImage", postImage);
-    return this.http.post<Post>(`${baseUrl}/posts`, formData);
+    return this.http.post<Post>(`${environment.baseUrl}/posts`, formData).pipe(
+      catchError(error => throwError(() => error.error.error)) // Get the error message from HttpErrorResponse
+    )
   }
 
   modifiyPost(post:Post, postImage:File|string, postId:string, resetPostImage:boolean=false){
@@ -34,12 +35,12 @@ export class PostService {
       formData.append("postImage", postImage);
     }
 
-    return this.http.put(`${baseUrl}/posts/${postId}`, formData);
+    return this.http.put(`${environment.baseUrl}/posts/${postId}`, formData);
 
   }
 
   getPosts():Observable<PostWithUserInfo[]>{
-    return this.http.get<PostWithUserInfo[]>(`${baseUrl}/posts`).pipe(
+    return this.http.get<PostWithUserInfo[]>(`${environment.baseUrl}/posts`).pipe(
       // Sort posts by update time
       map(posts => [...posts].sort((a: PostWithUserInfo, b: PostWithUserInfo) => { 
         const A = new Date(a.createdAt).getTime();
@@ -58,15 +59,15 @@ export class PostService {
 
 
   getPostById(postId:string):Observable<Post>{
-    return this.http.get<Post>(`${baseUrl}/posts/${postId}`);
+    return this.http.get<Post>(`${environment.baseUrl}/posts/${postId}`);
   }
 
   likePost(postId:string, like: 0|1){
-    return this.http.post(`${baseUrl}/posts/${postId}/like`, { like })
+    return this.http.post(`${environment.baseUrl}/posts/${postId}/like`, { like })
   }
 
   deletePost(postId:string){
-    return this.http.delete(`${baseUrl}/posts/${postId}`);
+    return this.http.delete(`${environment.baseUrl}/posts/${postId}`);
   }
 
 } // export class PostService

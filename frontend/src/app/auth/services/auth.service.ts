@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, EMPTY, tap } from 'rxjs';
-import { baseUrl } from 'src/environments/environment';
+import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
-import { Credentials } from "../shared/models/Credential.model";
+import { Credentials } from "../../shared/models/Credential.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class AuthService {
 
   loginUser(email: string, password: string) {
     return this.http.post<Credentials>
-      (`${baseUrl}/login`, { email: email, password: password })
+      (`${environment.baseUrl}/login`, { email: email, password: password })
       .pipe(
         tap( (credentials) => {
           this.setCredentials(credentials);
