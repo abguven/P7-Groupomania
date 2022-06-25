@@ -42,8 +42,7 @@ export class LoginComponent implements OnInit {
         }),
         catchError( error => {
           this.loading = false;
-          console.log("error: ", error);
-          this.errorMessage = error.error.error;
+          this.errorMessage = error;
           return EMPTY;
         })
       ).subscribe();
