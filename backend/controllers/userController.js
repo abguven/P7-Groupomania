@@ -177,7 +177,7 @@ exports.login = (req, res) => {
 
             res.status(200).json({ userId: user.uuid, token: token, userRole: user.role });
         })
-        .catch(err => errHandler(error, res))
+        .catch(error => errHandler(error, res))
 
 } // exports.login = (req, res) 
 
