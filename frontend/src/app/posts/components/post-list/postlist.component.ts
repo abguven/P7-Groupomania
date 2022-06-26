@@ -4,7 +4,6 @@ import { catchError, tap } from "rxjs/operators";
 import { PostService } from '../../services/post.service';
 import { PostWithUserInfo } from 'src/app/shared/models/PostWithUserInfo.model';
 import { AuthService } from '../../../auth/services/auth.service';
-import { Credentials } from 'src/app/shared/models/Credential.model';
 
 
 @Component({
@@ -26,7 +25,7 @@ export class PostListComponent implements OnInit {
   ngOnInit(): void {
     this.posts$ = this.postService.getPosts();
     this.isAdmin = this.auth.isAdmin();
-    this.loggedUserId = this.getCredentials().userId;
+    this.loggedUserId = this.auth.getCredentials().userId;
     this.loading = false;
   }
 
@@ -43,15 +42,12 @@ export class PostListComponent implements OnInit {
     .subscribe()
   }
 
+  /**
+   * Reload current page
+   */
   onRefresh(){
     location.reload();
   }
-
-  getCredentials():Credentials{
-    return this.auth.getCredentials();
-  }
-
-
 
 
 }
