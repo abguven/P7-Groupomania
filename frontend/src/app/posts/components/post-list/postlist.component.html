@@ -1,3 +1,6 @@
+<div class="mt-3">
+    <app-error-panel *ngIf="errorMessage" errorMessage="{{ errorMessage }}"></app-error-panel>
+</div>
 <div class="mt-4">
     <app-new-post (refresh)="onRefresh()"></app-new-post>
 </div>
@@ -14,8 +17,7 @@
         [post]="post"
         [loggedUserId]="loggedUserId"
         [isAdmin]="isAdmin"
-        (likeAction)="onLikeAction($event)"
-        (deleteAction)="onDeleteAction($event)"
+        (deleteRequest)="onDeleteAction($event)"
     ></app-post-list-item>
     <p *ngIf="!loading" class="text-warning">{{ errorMessage }}</p>  
 

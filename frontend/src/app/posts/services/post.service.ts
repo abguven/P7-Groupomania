@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, Subject, throwError } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, delay, map } from "rxjs/operators";
 import { Post } from 'src/app/shared/models/Post.model';
 import { PostWithUserInfo } from "src/app/shared/models/PostWithUserInfo.model";
@@ -35,7 +35,9 @@ export class PostService {
       formData.append("postImage", postImage);
     }
 
-    return this.http.put(`${environment.baseUrl}/posts/${postId}`, formData);
+    return this.http.put(`${environment.baseUrl}/posts/${postId}`, formData).pipe(
+      catchError(error => throwError(() => error.error.error)) // Get the error message from HttpErrorResponse
+    );
 
   }
 
@@ -52,22 +54,29 @@ export class PostService {
           post.usersLiked = post.PostLikes.map( item => item.UserUuid);
         }
         return posts;
-      })
+      }),
+      catchError(error => throwError(() => error.error.error)) // Get the error message from HttpErrorResponse
     )
   } // getPosts()
 
 
 
   getPostById(postId:string):Observable<Post>{
-    return this.http.get<Post>(`${environment.baseUrl}/posts/${postId}`);
+    return this.http.get<Post>(`${environment.baseUrl}/posts/${postId}`).pipe(
+      catchError(error => throwError(() => error.error.error)) // Get the error message from HttpErrorResponse
+    );
   }
 
   likePost(postId:string, like: 0|1){
-    return this.http.post(`${environment.baseUrl}/posts/${postId}/like`, { like })
+    return this.http.post<{ postId:string, userId:string, liked:boolean, likes: number }>(`${environment.baseUrl}/posts/${postId}/like`, { like }).pipe(
+      catchError(error => throwError(() => error.error.error)) // Get the error message from HttpErrorResponse
+    )
   }
 
   deletePost(postId:string){
-    return this.http.delete(`${environment.baseUrl}/posts/${postId}`);
+    return this.http.delete(`${environment.baseUrl}/posts/${postId}`).pipe(
+      catchError(error => throwError(() => error.error.error)) // Get the error message from HttpErrorResponse
+    );
   }
 
 } // export class PostService

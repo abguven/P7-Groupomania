@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, tap } from "rxjs/operators";
 import { PostService } from '../../services/post.service';
 import { PostWithUserInfo } from 'src/app/shared/models/PostWithUserInfo.model';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Credentials } from 'src/app/shared/models/Credential.model';
-
 
 
 @Component({
@@ -31,30 +30,12 @@ export class PostListComponent implements OnInit {
     this.loading = false;
   }
 
-  onLikeAction( likeAction: { postId:string, like: 0|1 } ){
-    this.loading = true;
-    this.postService.likePost( likeAction.postId, likeAction.like ).pipe(
-      tap(() => {
-        this.loading = false;
-        this.onRefresh();
-      }),
-      catchError(error => {
-        this.loading = false;
-        this.errorMessage = error;
-        return EMPTY;
-      })
-    ).subscribe();
-  }
-
   onDeleteAction(postId: string){
-    this.loading = true;
     this.postService.deletePost(postId).pipe(
       tap(() => {
-        this.loading = false;
-        this.onRefresh();
+         this.onRefresh();
       }),
       catchError( error => {
-        this.loading = false;
         this.errorMessage = error;
         return EMPTY;
       } )

@@ -10,7 +10,6 @@ module.exports = Object.freeze({
   ERR_DB_UPDATE_ERROR: "Erreur de mise à jour de la base de données",
 
 
-
   // Users*
   ERR_EMAIL_UNIQUE : "Cet email existe déjà dans la base de donnés",
   ERR_EMAIL_NOT_FOUND: "Email n'existe pas dans la base de données",
@@ -39,5 +38,5 @@ module.exports = Object.freeze({
   MSG_USER_DELETED: "Utilisateur a bien été supprimée",
   MSG_POST_DELETED: "Publication a bien été supprimée",
   MSG_LISTENING_ON_PORT: "Serveur est actif sur le port : ",
-  MSG_LIKE_OK: "Mise à jour de like avec succes"
+  
 });

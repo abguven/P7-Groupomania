@@ -18,13 +18,16 @@
                 <button class="btn btn-primary" 
                 (click)="onDeletePost()" *ngIf="canUpdate(post.user_uuid)">Supprimer</button>
             </div>
-            <div class="like-buttons">
+            <div class="like-buttons" *ngIf="!likeInProgress">
                 <i class="bi bi-hand-thumbs-up-fill like-icon" title="j'aime"
                     (click)="onLikeAction()" [ngClass]="{ 'liked': liked }"></i>
-                <span *ngIf="post.likes">{{ post.likes }}</span>
+                <span *ngIf="likes">{{ likes }}</span>
             </div>
-
+            <app-bs-spinner *ngIf="likeInProgress"></app-bs-spinner>
+            
+            
         </div>
     </div>
-
 </div>
+
+<app-error-panel *ngIf="errorMessage" errorMessage="{{ errorMessage }}"></app-error-panel>

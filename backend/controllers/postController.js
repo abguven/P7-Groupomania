@@ -122,7 +122,6 @@ exports.updateById = async (req, res) => {
             fs.stat(oldFilePath, function (err, stat) {
                 if (!err && stat.isFile()) {
                     fs.unlinkSync(oldFilePath); // Delete file if exists
-                    console.log(`${oldFilePath} deleted`); // DEBUG
                 } else {
                     console.log(`Can't delete ${oldFilePath}`); // It's an internal error, no need to return it, just log it
                 }
@@ -140,7 +139,6 @@ exports.updateById = async (req, res) => {
 
 // Delete post
 exports.deleteById = (req, res) => {
-
     // Find post to delete
     Post.findByPk(req.params.uuid)
         .then(post => {
@@ -161,8 +159,10 @@ exports.deleteById = (req, res) => {
                 }) 
             }            
             // Delete the post
-            post.destroy();
-            res.status(200).json({ message: lang.MSG_POST_DELETED })
+            post.destroy()
+                .then( () => res.status(200).json({ message: lang.MSG_POST_DELETED }))
+                .catch(error => errHandler(error, res));
+
         })
         .catch(error => errHandler(error, res))
 } // exports.deleteById = (req, res)
@@ -198,8 +198,9 @@ exports.likePost = async (req, res) => {
                 throw new Error(lang.ERR_DB_UPDATE_ERROR);
             }
 
-            postToLike.increment("likes", { by: 1 });
-            return res.status(201).json({ message: lang.MSG_LIKE_OK })
+            await postToLike.increment("likes", { by: 1 });
+            // Successfully liked
+            return res.status(201).json({ postId, userId, liked: true, likes:postToLike.likes+1 });
 
 
         } else if (like == 0) {
@@ -209,14 +210,16 @@ exports.likePost = async (req, res) => {
             }
 
             // Delete his like record from "postlikes" table
-            postLikesOfUser[0].destroy();
+            await postLikesOfUser[0].destroy();
 
             // Update the number of likes in "posts" table
-            postToLike.decrement("likes", { by: 1 });
-            return res.status(201).json({ message: lang.MSG_LIKE_OK })
+            await postToLike.decrement("likes", { by: 1 });
+  
+            // Successfully unliked
+            return res.status(201).json({ postId, userId, liked: false, likes: postToLike.likes-1 });
         } else {
             // The request is not valid
-            return res.status(400).json({ error: lang.ERR_INVALID_LIKE_ARGUMENT })
+            return res.status(400).json({ error: lang.ERR_INVALID_LIKE_ARGUMENT });
         }
 
     } catch (error) {

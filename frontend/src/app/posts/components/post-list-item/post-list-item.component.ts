@@ -2,6 +2,8 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { PostWithUserInfo } from 'src/app/shared/models/PostWithUserInfo.model';
 import { EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, EMPTY, Observable, tap } from 'rxjs';
+import { PostService } from '../../services/post.service';
 
 @Component({
   selector: 'app-post-list-item',
@@ -11,21 +13,39 @@ import { Router } from '@angular/router';
 export class PostListItemComponent implements OnInit {
 
   errorMessage!: string;
-  @Input() liked!: boolean;
+  likeInProgress! :boolean;
+  liked!: boolean;
+  likes!: number;
   @Input() post!: PostWithUserInfo;
   @Input() loggedUserId!: string;
   @Input() isAdmin!: boolean;
-  @Output() likeAction = new EventEmitter<{ postId: string, like: 0|1 }>();
-  @Output() deleteAction = new EventEmitter<string>();
+  @Output() deleteRequest = new EventEmitter<string>();
   
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private postService: PostService
+  ) { }
 
   ngOnInit(): void {
     this.liked = this.post.usersLiked.includes(this.loggedUserId);
+    this.likes = this.post.likes;
+    this.likeInProgress = false;
   }
 
   onLikeAction(){
-    this.likeAction.emit({ postId: this.post.uuid, like: this.liked ? 0 : 1 });
+    this.likeInProgress = true;
+    this.postService.likePost(this.post.uuid, this.liked ? 0 : 1).pipe(
+      tap((likeResponse) => {
+        this.liked = likeResponse.liked;
+        this.likes = likeResponse.likes;
+        this.likeInProgress = false;
+      }),
+      catchError(error => {
+        this.likeInProgress = false;
+        this.errorMessage = error;
+        return EMPTY;
+      })
+    ).subscribe();
   }
 
   onModifyPost(postId:string){
@@ -34,7 +54,7 @@ export class PostListItemComponent implements OnInit {
 
   onDeletePost(){
     if (confirm(`Êtes-vous sur de supprimer la publication?`)){
-      this.deleteAction.emit(this.post.uuid);
+      this.deleteRequest.emit(this.post.uuid);
     }
   }
 
