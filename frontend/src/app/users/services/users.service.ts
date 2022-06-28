@@ -25,9 +25,9 @@ export class UsersService {
     formData.append("password", user.password);
     formData.append("user_name", user.user_name);
     formData.append("last_name", user.last_name);
-    return this.http.post<{ user: User }> // TODO : Check return value
+    return this.http.post<{ user: User }> 
       (`${environment.baseUrl}/users`, formData).pipe(
-        catchError(error => throwError(error.error.error)) // Reformat the returned error value
+        catchError(error => throwError(() => error.error.error)) 
       );
   }
 
@@ -54,11 +54,10 @@ export class UsersService {
     }
     formData.append("user_name", user.user_name);
     formData.append("last_name", user.last_name);
-    return this.http.put // TODO : Check return value
-      (`${environment.baseUrl}/users/` + user.uuid, formData) // TODO : We send the userID too, check if this modifiy the id in the DB
-      .pipe(
-        catchError(error => throwError(error.error.error))
-      );
+    return this.http.put(`${environment.baseUrl}/users/` +
+            user.uuid, formData).pipe(
+              catchError(error => throwError(() => error.error.error))
+            );
   } // modifiyUser(user: User, avatar: File | string)
 
 
@@ -67,12 +66,10 @@ export class UsersService {
  * @returns Observable
  */
   getUserById(id:string) {
-    return this.http.get<User>(`${environment.baseUrl}/users/` + id)
-      .pipe(catchError(error => throwError(error.error.error)));
+    return this.http.get<User>(`${environment.baseUrl}/users/` + id).pipe(
+      catchError(error => throwError(() => error.error.error))
+    );
   } // getUserById(user: User, avatar: File | string)
-
-
-
 
 
 } // export class UsersService

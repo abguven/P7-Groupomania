@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 
 // Debugging information
-//app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 // Static paths for images
 app.use("/images/avatars/", express.static(path.join(__dirname, "images/avatars")));

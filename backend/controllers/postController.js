@@ -223,7 +223,7 @@ exports.likePost = async (req, res) => {
         }
 
     } catch (error) {
-        errHandler(error);
+        errHandler(error,res);
     }
 
 

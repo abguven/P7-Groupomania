@@ -1,4 +1,3 @@
-<app-bs-spinner *ngIf="loading"></app-bs-spinner>
 <div class="container">
     <form [formGroup]="userForm" *ngIf="!loading">
         <div class="row">
@@ -53,7 +52,8 @@
                 <button class="btn btn-primary mt-2" [disabled]="userForm.invalid" (click)="onSubmit()">
                     Inscription
                 </button>
-                <p class="text-danger mt-2" *ngIf="errorMsg">{{ errorMsg }}</p>
+                <app-bs-spinner *ngIf="loading"></app-bs-spinner>
+                <app-error-panel *ngIf="errorMessage" errorMessage="{{ errorMessage }}"></app-error-panel>
             </div>
         </div>
     </form>

@@ -46,7 +46,7 @@ export class UserUpdateComponent implements OnInit {
           email: [user.email, [Validators.required, Validators.email]],
           password: ["", passwordValidator], 
           user_name: [user.user_name, Validators.required],
-          last_name: [user.last_name],
+          last_name: [user.last_name? user.last_name: ""],
           avatar: [user.avatar_url],
         });
         if (user.avatar_url){

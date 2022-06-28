@@ -52,7 +52,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    last_name: DataTypes.STRING,
+    last_name: {
+      type: DataTypes.STRING,
+      defaultValue: "",
+    },
     avatar_url: DataTypes.STRING,
     role: {
       type: DataTypes.STRING,

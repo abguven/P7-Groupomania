@@ -15,7 +15,7 @@ import { CustomValidators } from 'src/app/shared/validators/customValidators';
 export class SignupComponent implements OnInit {
   userForm!: FormGroup;
   loading!: boolean;
-  errorMsg!: string;
+  errorMessage!: string;
   //userId!: string;
   resetAvatar = false;
   readonly defaultAvatarPreviewImage = "../../assets/default-profile-picture.jpg";
@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
     this.userForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email] ],
       user_name: [null, Validators.required],
-      last_name: [null],
+      last_name: [""],
       avatar: [null],
       password: [null, Validators.required],
       passwordConfirmation: [null, Validators.required]
@@ -63,7 +63,7 @@ export class SignupComponent implements OnInit {
       }),
       catchError(error => {
         this.loading = false;
-        this.errorMsg = error;
+        this.errorMessage = error;
         return EMPTY;
       })
     ).subscribe();

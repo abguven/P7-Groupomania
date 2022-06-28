@@ -61,7 +61,6 @@ exports.updateById = async (req, res) => {
 
         user.email = email;
         if (password) {
-            console.log(`Setting password to : ${password}`); // DEBUG
             user.password = password;
         }
         user.user_name = user_name;
@@ -83,7 +82,6 @@ exports.updateById = async (req, res) => {
             // Try deleting old file if exists
             const oldFileName = oldUserAvatarUrl.split("/images/avatars")[1];
             const oldFilePath = "images/avatars/" + oldFileName;
-            console.log(`oldFileName: ${oldFileName} ||||  oldFilePath: ${oldFilePath}`); // DEBUG
 
             // Delete file if exists
             fs.stat(oldFilePath, function (err, stat) {
@@ -92,7 +90,6 @@ exports.updateById = async (req, res) => {
                 } else {
                     if (stat.isFile()) {
                         fs.unlinkSync(oldFilePath); // Delete file if exists
-                        console.log(`${oldFilePath} deleted`) // DEBUG    
                     }
                 }
             });
@@ -109,15 +106,15 @@ exports.updateById = async (req, res) => {
 
 
 // Get all users
-exports.getAllUsers = (req, res) => {
-    User.findAll()
-        .then(users => {
-            res.status(200).json(users);
-        })
-        .catch(error => {
-            errHandler(error, res);
-        })
-}
+// exports.getAllUsers = (req, res) => {
+//     User.findAll()
+//         .then(users => {
+//             res.status(200).json(users);
+//         })
+//         .catch(error => {
+//             errHandler(error, res);
+//         })
+// }
 
 // Get user by id
 exports.getById = (req, res) => {
@@ -134,23 +131,23 @@ exports.getById = (req, res) => {
 }
 
 // Delete user by id
-exports.deleteById = (req, res) => {
-    User.findByPk(req.params.uuid)
-        .then(user => {
-            if (user === null) {
-                return res.status(404).json({ error: lang.ERR_USER_NOT_FOUND });
-            }
-            // Authorisation check
-            if (req.auth.userId != user.uuid && !req.auth.isAdmin) {
-                console.log("req.auth : ", req.auth);
-                return res.status(403).json({ error: lang.ERR_NOT_AUTHORISED_FOR })
-            }
-            // Delete the user
-            user.destroy();
-            res.status(200).json({ message: lang.MSG_USER_DELETED });
-        })
-        .catch(error => errHandler(error, res))
-}
+// exports.deleteById = (req, res) => {
+//     User.findByPk(req.params.uuid)
+//         .then(user => {
+//             if (user === null) {
+//                 return res.status(404).json({ error: lang.ERR_USER_NOT_FOUND });
+//             }
+//             // Authorisation check
+//             if (req.auth.userId != user.uuid && !req.auth.isAdmin) {
+//                 console.log("req.auth : ", req.auth);
+//                 return res.status(403).json({ error: lang.ERR_NOT_AUTHORISED_FOR })
+//             }
+//             // Delete the user
+//             user.destroy();
+//             res.status(200).json({ message: lang.MSG_USER_DELETED });
+//         })
+//         .catch(error => errHandler(error, res))
+// }
 
 
 // Login

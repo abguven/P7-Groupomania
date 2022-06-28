@@ -21,6 +21,7 @@ module.exports = Object.freeze({
   ERR_ALREADY_LIKED_THIS_POST: "Cet utilisateur a déjà aimé ce post",
   ERR_CANT_UNLIKE: "Cet utilisateur a déjà retiré sans like ou n'a jamais aimé cette publication",
   ERRMSG_INVALID_USER_ID: "Identifiant utilisateur(UserId) non valid",
+  ERRMSG_PAYLOAD_INVALID: "Vérification de Payload echouée",
 
 
   // Multer

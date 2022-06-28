@@ -14,14 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PostLike.init({
-    /*user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
-    post_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    }*/
+
   }, {
     timestamps: false,
     modelName: 'PostLike',

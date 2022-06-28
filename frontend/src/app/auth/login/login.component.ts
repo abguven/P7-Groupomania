@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
           return EMPTY;
         })
       ).subscribe();
-
   } // onLogin()
 
 

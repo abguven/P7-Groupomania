@@ -34,15 +34,15 @@ router.get("/users/:uuid",
         userController.getById
 );
 
-// ONLY FOR TEST , TO DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // Get all users 
-router.get("/users", auth, userController.getAllUsers);
+// router.get("/users", auth, userController.getAllUsers);
 
 // Delete user by id
-router.delete("/users/:uuid",
-        auth,
-        userController.deleteById
-);
+// router.delete("/users/:uuid",
+//         auth,
+//         userController.deleteById
+// );
 
 
 module.exports = router;

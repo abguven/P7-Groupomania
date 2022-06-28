@@ -13,10 +13,13 @@ export class HeaderComponent implements OnInit {
   isAuth$!: Observable<boolean>;
   constructor(private auth: AuthService) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {  
     this.isAuth$ = this.auth.isAuth$.pipe(
       shareReplay(1),
-      tap(() => this.userId = this.auth.getCredentials().userId)      
+      tap( () => {
+        this.userId = this.auth.getCredentials().userId;
+        
+      })      
     );
   }
 
